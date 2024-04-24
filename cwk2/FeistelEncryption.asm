@@ -152,6 +152,12 @@ D = M
 @28
 M = D
 
+// Store L0 in RAM[30]
+@3
+D = M
+@30
+M = D
+
 // Calculate L1, R1 (RAM 5,6)
 // L1 = R0
 // Store R0 in RAM[13] for later loop, L_i = R_i-1
@@ -177,16 +183,17 @@ M = D
     // Use Pointer to access to keys
     @12
     D = M 
-    @28
+    @29
     D = A - D // Ki = RAM[D]
     @29 // Use RAM[29] to store the key
     M = D
     A = M
     D = M // D = Ki
+    @31
     M = D
-    @5
+    @13
     D = M
-    @29
+    @31
     D = D & M // Since no invert, no need to mask
     // Store the result in RAM[20]
     @20 // R0 & K0
@@ -200,7 +207,7 @@ M = D
     // Store !R0 in RAM[21]
     @21
     M = D
-    @1
+    @31
     D = !M
     @255
     D = D & A // Mask !K0 to 8bit
@@ -217,7 +224,7 @@ M = D
     M = D
     // Calculate L0 XOR RAM[22]
     // RAM[23] = !L0 & RAM[22] RAM[24] = L0 & !RAM[22]
-    @3
+    @30
     D = !M
     @255
     D = D & A // D = !L0
@@ -229,7 +236,7 @@ M = D
     D = !M
     @255
     D = D & A
-    @3
+    @30
     D = D & M
     @24
     M = D
@@ -239,9 +246,14 @@ M = D
     @24
     D = D | M
     @6
-    M = D // Value of R1
+    M = D // Value of Ri
+
     @13
     M = D
+    @5
+    D = M
+    @30
+    M = D // Value of Li
 
     @12
     M = M - 1
@@ -295,42 +307,3 @@ M = D
     M = 1
     @finishOverflowCheck1
     0;JMP
-
-// @11
-// M = D
-// M = M + D
-// @128    // Load the mask (0b10000000) into A
-// D=D&A  // Extract the most significant bit of the key
-// @11
-// M = M + D
-
-
-
-//
-// // Perform the Feistel encryption algorithm
-// // Repeat the encryption round for a desired number of rounds
-//
-// // Round 1
-// // Encryption round using R1a, R1b, and 1 as inputs
-// // Encryption function: R1a XOR 1
-// @R1a
-// D=!M
-// // @1
-// // D=D^M
-// @1
-// D=D&M
-//
-// @R2
-// M = D
-//
-// @1
-// D=!M
-//
-// @R1a
-// D=D&M
-//
-// @R3
-// M=D
-//
-// @R3
-// M = D | M
