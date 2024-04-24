@@ -168,7 +168,7 @@ M = D
 (loop2)
     // Break condition
     @12
-    D = M - 1
+    D = M
     @loop2end
     D;JLT
 
@@ -183,7 +183,7 @@ M = D
     // Use Pointer to access to keys
     @12
     D = M 
-    @29
+    @28
     D = A - D // Ki = RAM[D]
     @29 // Use RAM[29] to store the key
     M = D
