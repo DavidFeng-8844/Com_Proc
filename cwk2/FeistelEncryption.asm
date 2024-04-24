@@ -123,9 +123,24 @@ M=D
 @3
 D = M
 @255
-D = D & A
-@3
-M = D
+D = D & A// // Calculate the value of L2 and R2
+// // L2 = R1
+// @6
+// D = M
+// @7
+// M = D
+// 
+// // R2 = L1 XOR (R1 XOR !K1)
+// // Calculate R1 XOR !K1
+// //Calculate R1 & K1
+// @5
+// D = M
+// @15
+// D = D & M // Since no invert, no need to mask
+// // Store the result in RAM[25]
+// @25 // R1 & K1
+
+
 
 // Perform the Feistel encryption algorithm
 // Store number of rounds in RAM[12]
@@ -260,24 +275,51 @@ M = D
     @loop2
     0;JMP
 (loop2end)
-// // Calculate the value of L2 and R2
-// // L2 = R1
-// @6
-// D = M
-// @7
-// M = D
-// 
-// // R2 = L1 XOR (R1 XOR !K1)
-// // Calculate R1 XOR !K1
-// //Calculate R1 & K1
-// @5
-// D = M
-// @15
-// D = D & M // Since no invert, no need to mask
-// // Store the result in RAM[25]
-// @25 // R1 & K1
+// LOB 8 bits of L1
+@5
+D = M
+// Store the result of L0 in RAM7
+@7
+M = D
+@8
+D = A
+@11
+M = D
+(loop3)
+    // Break condition
+    @11
+    D = M - 1
+    @loop3end
+    D;JLT
 
+    @18
+    M = 0
+    @7
+    D = M
+    @overFlowCheck2 // Assign RAM[18] to 1 if overflow (MSB is 1)
+    D;JLT
+    (finishOverflowCheck2)
+    @7
+    M = D + M
+    D = M
+    @18
+    D = M
+    @7
+    M = D + M
 
+    @11
+    M = M - 1
+    @loop3
+    0;JMP
+(loop3end)
+
+//OR RAM[6] and RAM[7] to get the result and store in in RAM[0]
+@6
+D = M
+@7
+D = D | M
+@0
+M = D
 
 (END)
 @END
@@ -306,4 +348,10 @@ M = D
     @18
     M = 1
     @finishOverflowCheck1
+    0;JMP
+
+(overFlowCheck2)
+    @18
+    M = 1
+    @finishOverflowCheck2
     0;JMP
