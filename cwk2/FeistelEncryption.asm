@@ -13,7 +13,7 @@ D = M
 @128
 D = D - A
 @8bit1-1
-D;JGT
+D;JGE
 (finishCheck1)
 @1
 D = M
@@ -35,7 +35,7 @@ D = D - A
 @14
 M = 0
 @8bit1-2
-D;JGT
+D;JGE
 (finishCheck2)
 @15
 D = M
@@ -57,7 +57,7 @@ D = D - A
 @14
 M = 0
 @8bit1-3
-D;JGT
+D;JGE
 (finishCheck3)
 @16
 D = M
