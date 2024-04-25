@@ -119,29 +119,6 @@ M=D
     0;JMP
 (loop1end)
 
-// & the result with 255 to get the last 8 bits
-@3
-D = M
-@255
-D = D & A// // Calculate the value of L2 and R2
-// // L2 = R1
-// @6
-// D = M
-// @7
-// M = D
-// 
-// // R2 = L1 XOR (R1 XOR !K1)
-// // Calculate R1 XOR !K1
-// //Calculate R1 & K1
-// @5
-// D = M
-// @15
-// D = D & M // Since no invert, no need to mask
-// // Store the result in RAM[25]
-// @25 // R1 & K1
-
-
-
 // Perform the Feistel encryption algorithm
 // Store number of rounds in RAM[12]
 @3
@@ -275,6 +252,8 @@ M = D
     @loop2
     0;JMP
 (loop2end)
+
+
 // LOB 8 bits of L1
 @5
 D = M
